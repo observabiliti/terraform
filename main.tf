@@ -1,6 +1,6 @@
 
 locals {
-    region = "sa-east-1"
+    region = "ap-south-1"
 }
 
 # Create a VPC

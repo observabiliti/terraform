@@ -15,7 +15,7 @@ terraform {
 
 # Configuration options
 provider "aws" {
-  region = "sa-east-1"
+  region = var.region_name
   access_key = var.AWS_ACCESS_KEY
   secret_key = var.AWS_SECRET_KEY
 }
