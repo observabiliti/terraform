@@ -1,10 +1,10 @@
 terraform {
-  backend "remote" {
-      organization = "krishna01"
-      workspaces {
-          name = "terraform-work"
-      }
-  }
+#   backend "remote" {
+#       organization = "krishna01"
+#       workspaces {
+#           name = "terraform-work"
+#       }
+#   }
 }
 
 provider "aws" {
@@ -27,6 +27,28 @@ resource "aws_instance" "vm1" {
     key_name = "${aws_key_pair.my_pub_key.key_name}"
     vpc_security_group_ids = [aws_security_group.my_sec_grp.id]
     user_data = data.template_file.userdata.rendered
+    # provisioner "local-exec" {
+    #     command = <<EOT
+    #         echo "its working - $NAME"
+    #     EOT
+    #     environment = {
+    #       NAME = "Rohith"
+    #      }
+    # }
+
+    provisioner "remote-exec" {
+        inline = [
+            "df -h > ./df.txt",
+            "pwd > pwd.txt",
+        ]
+        connection {
+            type = "ssh"
+            host = "${self.public_ip}"
+            user = "ec2-user"
+            private_key= "${file("~/.ssh/id_rsa")}"
+        }
+    }
+
     tags = {
         Name = "my-vm1"
     } 
