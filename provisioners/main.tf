@@ -1,10 +1,10 @@
 terraform {
-#   backend "remote" {
-#       organization = "krishna01"
-#       workspaces {
-#           name = "terraform-work"
-#       }
-#   }
+  backend "remote" {
+      organization = "krishna01"
+      workspaces {
+          name = "terraform-work"
+      }
+  }
 }
 
 provider "aws" {
@@ -36,18 +36,29 @@ resource "aws_instance" "vm1" {
     #      }
     # }
 
-    provisioner "remote-exec" {
-        inline = [
-            "df -h > ./df.txt",
-            "pwd > pwd.txt",
-        ]
-        connection {
-            type = "ssh"
-            host = "${self.public_ip}"
-            user = "ec2-user"
-            private_key= "${file("~/.ssh/id_rsa")}"
-        }
-    }
+    # provisioner "remote-exec" {
+    #     inline = [
+    #         "df -h > ./df.txt",
+    #         "pwd > pwd.txt",
+    #     ]
+    #     connection {
+    #         type = "ssh"
+    #         host = "${self.public_ip}"
+    #         user = "ec2-user"
+    #         private_key= "${file("~/.ssh/id_rsa")}"
+    #     }
+    # }
+
+    # provisioner "file" {
+    #     content = "Hi Rohith, its Terraform..!"
+    #     destination = "/home/ec2-user/new_file.txt"
+    #     connection {
+    #         type = "ssh"
+    #         host = "${self.public_ip}"
+    #         user = "ec2-user"
+    #         private_key= "${file("~/.ssh/id_rsa")}"
+    #     }       
+    # }
 
     tags = {
         Name = "my-vm1"
