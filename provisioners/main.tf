@@ -46,7 +46,7 @@ resource "aws_security_group" "my_sec_grp" {
     description      = "Open http port 80"
     from_port        = 80
     to_port          = 80
-    protocol         = "http"
+    protocol         = "tcp"
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = []
   }
@@ -55,7 +55,7 @@ resource "aws_security_group" "my_sec_grp" {
     description      = "SSH from local"
     from_port        = 22
     to_port          = 22
-    protocol         = "ssh"
+    protocol         = "tcp"
     cidr_blocks      = ["117.192.225.172/32"]
     ipv6_cidr_blocks = []
   }
