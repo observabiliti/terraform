@@ -37,7 +37,7 @@ resource "aws_iam_policy_attachment" "attach-policy" {
 
 resource "aws_iam_instance_profile" "aws-instance-profile" {
     name = "aws-instance-profile"
-    roles = ["${aws_iam_role.ec2_s3_access_role.name}"]
+    role = "${aws_iam_role.ec2_s3_access_role.name}"
 }
 
 resource "aws_instance" "my-vms" {
