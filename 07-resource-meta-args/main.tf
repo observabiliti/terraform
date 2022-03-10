@@ -1,7 +1,7 @@
 terraform {
   backend "remote" {
       organisation = "krishna01"
-      workspace {
+      workspaces {
           name = "terraform-work"
       }
   }
@@ -40,6 +40,7 @@ resource "aws_iam_instance_profile" "aws-instance-profile" {
     role = "${aws_iam_role.ec2_s3_access_role.name}"
 }
 
+# resource meta argument - count is used here
 resource "aws_instance" "my-vms" {
     ami = "ami-076754bea03bde973"
     instance_type = "t2.micro"
@@ -53,6 +54,26 @@ resource "aws_instance" "my-vms" {
     ]
 }
 
+###Note: count and for_each are mutually exxlusive
+# resource meta argument - for_each is used here
+resource "aws_instance" "my-new-vms" {
+    ami = "ami-076754bea03bde973"
+    for_each = {
+        nano = "t2.nano"
+        micro = "t2.micro"
+    }
+    instance_type = each.value
+    tags = {
+        Name = "server - ${each.key}"
+    }
+}
+
+
 output "instance_public_ips" {
-    value = "${join(",",aws_instance.my-vms.*.public_ip)}"
+    value = "${join(",",aws_instance.my-vms[*].public_ip)}"
+}
+
+###Note: for map data structure, we need to use balues built-in function as shown below
+output "new_instance_public_ips" {
+    value = values(aws_instance.my-new-vms)[*].public_ip
 }
